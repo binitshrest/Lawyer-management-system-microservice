@@ -37,6 +37,7 @@ public class SecurityConfig {
                                                 // Permit internal service-to-service endpoints for lawyer-service
                                                 .requestMatchers(HttpMethod.POST, "/api/users/create").permitAll()
                                                 .requestMatchers(HttpMethod.GET, "/api/users/*").permitAll()
+                                                .requestMatchers(HttpMethod.GET, "/api/users/role/*").permitAll()
                                                 .requestMatchers(
                                                                 "/api/auth/**",
                                                                 "/swagger-ui/**",
