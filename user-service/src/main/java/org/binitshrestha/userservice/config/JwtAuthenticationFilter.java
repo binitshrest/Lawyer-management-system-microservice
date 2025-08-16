@@ -71,6 +71,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String path = request.getServletPath();
         return path.startsWith("/api/auth/") ||
                 path.startsWith("/swagger-ui/") ||
-                path.startsWith("/v3/api-docs/");
+                path.startsWith("/v3/api-docs/") ||
+                // Skip JWT filter for internal endpoints used by lawyer-service
+                path.equals("/api/users/create") ||
+                path.startsWith("/api/users/");
     }
 }

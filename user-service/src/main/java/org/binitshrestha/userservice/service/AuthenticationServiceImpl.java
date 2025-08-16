@@ -1,10 +1,11 @@
 package org.binitshrestha.userservice.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.binitshrestha.userservice.dto.request.LoginUserDto;
 import org.binitshrestha.userservice.dto.request.RegisterUserReqDto;
 import org.binitshrestha.userservice.dto.response.RegisterUserResDto;
-import org.binitshrestha.userservice.exception.EmailAlreadyExistsException;
+import org.binitshrestha.common_contract.exception.EmailAlreadyExistsException;
 import org.binitshrestha.userservice.mapper.UserMapper;
 import org.binitshrestha.userservice.model.Role;
 import org.binitshrestha.userservice.model.RoleType;
@@ -21,6 +22,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthenticationServiceImpl implements AuthenticationService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
@@ -38,14 +40,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (userRepository.existsByEmail(registerUserDto.email())) {
             throw new EmailAlreadyExistsException("A user with given email already exists" + registerUserDto.email());
         }
-        User user = User.builder()
-                .firstName(registerUserDto.firstName())
-                .lastName(registerUserDto.lastName())
-                .email(registerUserDto.email())
-                .password(
-                        passwordEncoder.encode(registerUserDto.password()))
-                .role(optionalRole.get())
-                .build();
+
+        User user = UserMapper.signUpToModel(registerUserDto, optionalRole, passwordEncoder);
 
         User newAuthUser = userRepository.save(user);
         return UserMapper.toResponseDto(newAuthUser);
@@ -54,15 +50,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User authenticate(LoginUserDto loginUserDto) {
         try {
-            System.out.println("Attempting to authenticate user: " + loginUserDto.email());
+            log.info("Attempting to authenticate user: " + loginUserDto.email());
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             loginUserDto.email(),
                             loginUserDto.password()));
-            System.out.println("Authentication successful for: " + loginUserDto.email());
+            log.info("Authentication successful for: " + loginUserDto.email());
             return userRepository.findByEmail(loginUserDto.email()).orElseThrow();
         } catch (Exception e) {
-            System.out.println("Authentication failed for: " + loginUserDto.email() + " - " + e.getMessage());
+            log.info("Authentication failed for: " + loginUserDto.email() + " - " + e.getMessage());
             throw e;
         }
     }

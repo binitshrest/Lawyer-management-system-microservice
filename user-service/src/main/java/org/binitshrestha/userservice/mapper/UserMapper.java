@@ -1,12 +1,18 @@
 package org.binitshrestha.userservice.mapper;
 
+import org.binitshrestha.common_contract.dto.RoleDto;
+import org.binitshrestha.common_contract.dto.UserCreateRequest;
 import org.binitshrestha.userservice.dto.CreateAdminRequestDto;
 import org.binitshrestha.userservice.dto.CreateAdminResponseDto;
-import org.binitshrestha.userservice.dto.RoleDto;
+import org.binitshrestha.userservice.dto.request.RegisterUserReqDto;
 import org.binitshrestha.userservice.dto.response.RegisterUserResDto;
 import org.binitshrestha.userservice.dto.response.UserResponse;
-import org.binitshrestha.userservice.dto.response.UserResponseDto;
+import org.binitshrestha.common_contract.dto.UserResponseDto;
+import org.binitshrestha.userservice.model.Role;
 import org.binitshrestha.userservice.model.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Optional;
 
 public class UserMapper {
     private UserMapper() {
@@ -28,10 +34,31 @@ public class UserMapper {
                 .email(adminRequestDto.email())
                 .build();
     }
+    public static User signUpToModel(RegisterUserReqDto registerUserDto, Optional<Role> role, PasswordEncoder passwordEncoder){
+        return  User.builder()
+                .firstName(registerUserDto.firstName())
+                .lastName(registerUserDto.lastName())
+                .email(registerUserDto.email())
+                .password(
+                        passwordEncoder.encode(registerUserDto.password()))
+                .role(role.orElse(null))
+                .build();
+    }
+    public static User signUpToModel(UserCreateRequest request, Optional<Role> role, PasswordEncoder passwordEncoder){
+        return  User.builder()
+                .firstName(request.firstName())
+                .lastName(request.lastName())
+                .email(request.email())
+                .password(
+                        passwordEncoder.encode(request.password()))
+                .role(role.orElse(null))
+                .build();
+    }
+
 
     public static UserResponseDto toResponse(User newUser) {
         return UserResponseDto.builder()
-                .id(String.valueOf(newUser.getId()))
+                .id(newUser.getId())
                 .firstName(newUser.getFirstName())
                 .lastName(newUser.getLastName())
                 .email(newUser.getEmail())
@@ -53,6 +80,20 @@ public class UserMapper {
                         .build())
                 .build();
     }
+
+    public static UserResponseDto toUserResponse(User newAuthUser) {
+        return UserResponseDto.builder()
+                .id(newAuthUser.getId())
+                .email(newAuthUser.getEmail())
+                .firstName(newAuthUser.getFirstName())
+                .lastName(newAuthUser.getLastName())
+                .role(RoleDto.builder()
+                        .name(newAuthUser.getRole().getName().toString())
+                        .description(newAuthUser.getRole().getDescription())
+                        .build())
+                .build();
+    }
+
 
     public static CreateAdminResponseDto toAdminResponseDto(User newAdminUser) {
         return CreateAdminResponseDto.builder()

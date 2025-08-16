@@ -1,5 +1,6 @@
 package org.binitshrestha.userservice.repository;
 
+import org.binitshrestha.common_contract.dto.UserResponseDto;
 import org.binitshrestha.userservice.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
