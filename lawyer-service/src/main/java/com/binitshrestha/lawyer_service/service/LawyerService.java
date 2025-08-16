@@ -13,4 +13,5 @@ public interface LawyerService {
 
     List<LawyerResponse> getLawyers();
 
+    List<LawyerResponse> searchBySpecialization(String specialization);
 }

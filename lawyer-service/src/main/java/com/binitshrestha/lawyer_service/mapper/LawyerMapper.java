@@ -79,4 +79,28 @@ public class LawyerMapper {
 
         return lawyerList;
     }
+
+    public static List<LawyerResponse> toLawyerResponse2(List<UserResponseDto> users, List<Lawyer> lawyers) {
+        List<LawyerResponse> lawyerResponses = new ArrayList<>();
+        for (Lawyer lawyer : lawyers) {
+            UserResponseDto matchedUser = users.stream()
+                    .filter(u -> u.id().equals(lawyer.getUserId()))
+                    .findFirst()
+                    .orElse(null);
+
+            if (matchedUser != null) {
+                lawyerResponses.add(
+                        LawyerResponse.builder()
+                                .user(matchedUser)
+                                .licenceNumber(lawyer.getLicenceNumber())
+                                .specialization(lawyer.getSpecialization())
+                                .yearsOfExperience(lawyer.getYearsOfExperience())
+                                .availableStatus(lawyer.getAvailabilityStatus().name())
+                                .hourlyRate(lawyer.getHourlyRate())
+                                .isVerified(lawyer.getIsVerified())
+                                .build());
+            }
+        }
+        return lawyerResponses;
+    }
 }

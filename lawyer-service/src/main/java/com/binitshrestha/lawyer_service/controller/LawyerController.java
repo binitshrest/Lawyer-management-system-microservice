@@ -28,4 +28,10 @@ public class LawyerController {
         return ResponseEntity.ok(lawyerService.getLawyers());
     }
 
+    // "/specialization="corporate law""
+    @GetMapping("/specialization")
+    public ResponseEntity<List<LawyerResponse>> searchBySpecialization(@RequestParam String specialization) {
+        return ResponseEntity.ok(lawyerService.searchBySpecialization(specialization));
+    }
+
 }
