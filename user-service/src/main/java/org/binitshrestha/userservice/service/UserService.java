@@ -23,4 +23,8 @@ public interface UserService {
     public CreateAdminResponseDto createAdministrator(CreateAdminRequestDto userDto);
 
     UserResponseDto createUserForLawyer(UserCreateRequest request);
+
+    UserResponseDto getUserById(Long id);
+
+    List<UserResponseDto> getUsersByRole(Long id);
 }

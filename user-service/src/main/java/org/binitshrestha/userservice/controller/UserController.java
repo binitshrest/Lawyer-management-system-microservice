@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -60,4 +61,13 @@ public class UserController {
         return user.isPresent();
     }
 
+    @GetMapping("/{id}")
+    UserResponseDto getUserById(@PathVariable("id") Long id) {
+        return userService.getUserById(id);
+    }
+
+    @GetMapping("/role/{role_id}") // get users by role id
+    List<UserResponseDto> getUsersByRole(@PathVariable("role_id") Long id) {
+        return userService.getUsersByRole(id);
+    }
 }

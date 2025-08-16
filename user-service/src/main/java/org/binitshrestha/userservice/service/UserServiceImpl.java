@@ -92,4 +92,15 @@ public class UserServiceImpl implements UserService {
         return UserMapper.toUserResponse(newAuthUser);
     }
 
+    @Override
+    public UserResponseDto getUserById(Long id) {
+        return userRepository.findById(id).map(UserMapper::toUserResponse)
+                .orElseThrow(() -> new UserNotFoundException("User Id not found," + id));
+    }
+
+    @Override
+    public List<UserResponseDto> getUsersByRole(Long id) {
+        return userRepository.findByRole(id).stream().map(UserMapper::toUserResponse).toList();
+    }
+
 }

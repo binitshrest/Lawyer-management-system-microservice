@@ -74,6 +74,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 path.startsWith("/v3/api-docs/") ||
                 // Skip JWT filter for internal endpoints used by lawyer-service
                 path.equals("/api/users/create") ||
+                path.startsWith("/api/users/role/") ||
                 path.startsWith("/api/users/");
     }
 }
