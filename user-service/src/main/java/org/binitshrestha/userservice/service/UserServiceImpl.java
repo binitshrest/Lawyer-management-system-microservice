@@ -1,12 +1,13 @@
 package org.binitshrestha.userservice.service;
 
 import lombok.RequiredArgsConstructor;
+import org.binitshrestha.common_contract.dto.UserCreateRequest;
 import org.binitshrestha.userservice.dto.CreateAdminRequestDto;
 import org.binitshrestha.userservice.dto.CreateAdminResponseDto;
-import org.binitshrestha.userservice.dto.request.UserUpdateRequestDto;
+import org.binitshrestha.userservice.dto.request.UserUpdateRequest;
 import org.binitshrestha.userservice.dto.response.UserResponse;
-import org.binitshrestha.userservice.dto.response.UserResponseDto;
-import org.binitshrestha.userservice.exception.EmailAlreadyExistsException;
+import org.binitshrestha.common_contract.dto.UserResponseDto;
+import org.binitshrestha.common_contract.exception.EmailAlreadyExistsException;
 import org.binitshrestha.userservice.exception.UserNotFoundException;
 import org.binitshrestha.userservice.mapper.UserMapper;
 import org.binitshrestha.userservice.model.Role;
@@ -35,18 +36,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDto updateUser(Long id, UserUpdateRequestDto userUpdateRequestDto) {
+    public UserResponseDto updateUser(Long id, UserUpdateRequest userUpdateRequest) {
         User updateUser = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User Id not found," + id));
 
         if (userRepository.existsByEmailAndIdNot(updateUser.getEmail(), id)) {
             throw new EmailAlreadyExistsException(
-                    "A user with given email already exists" + userUpdateRequestDto.email());
+                    "A user with given email already exists" + userUpdateRequest.email());
         }
 
-        updateUser.setFirstName(userUpdateRequestDto.firstName());
-        updateUser.setLastName(userUpdateRequestDto.lastName());
-        updateUser.setEmail(userUpdateRequestDto.email());
+        updateUser.setFirstName(userUpdateRequest.firstName());
+        updateUser.setLastName(userUpdateRequest.lastName());
+        updateUser.setEmail(userUpdateRequest.email());
 
         userRepository.save(updateUser);
         return UserMapper.toResponse(updateUser);
@@ -75,6 +76,20 @@ public class UserServiceImpl implements UserService {
                         .role(optionalRole.get())
                         .build());
         return UserMapper.toAdminResponseDto(newAdminUser);
+    }
+
+    @Override
+    public UserResponseDto createUserForLawyer(UserCreateRequest request) {
+        Optional<Role> optionalRole = roleRepository.findByName(RoleType.LAWYER);
+
+        if (optionalRole.isEmpty()) {
+            return null;
+        }
+
+        User user = UserMapper.signUpToModel(request, optionalRole, passwordEncoder);
+
+        User newAuthUser = userRepository.save(user);
+        return UserMapper.toUserResponse(newAuthUser);
     }
 
 }

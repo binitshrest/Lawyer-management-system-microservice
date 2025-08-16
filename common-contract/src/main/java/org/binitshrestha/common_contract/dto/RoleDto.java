@@ -1,4 +1,4 @@
-package org.binitshrestha.userservice.dto;
+package org.binitshrestha.common_contract.dto;
 
 import lombok.Builder;
 
