@@ -13,7 +13,6 @@ RUN mvn -q -B -DskipTests dependency:go-offline
 COPY . .
 RUN mvn -q -B -DskipTests -pl user-service -am clean package
 
-
 FROM eclipse-temurin:21-jre
 WORKDIR /app
 COPY --from=builder /app/user-service/target/user-service-0.0.1-SNAPSHOT.jar app.jar
