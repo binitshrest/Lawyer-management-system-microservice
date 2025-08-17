@@ -106,10 +106,4 @@ public class UserMapper {
                         .build())
                 .build();
     }
-
-    // public static Role mapToRole(RoleDto roleDto) {
-    // return Role.builder()
-    // .name(RoleType.valueOf(roleDto.name()))
-    // .build();
-    // }
 }

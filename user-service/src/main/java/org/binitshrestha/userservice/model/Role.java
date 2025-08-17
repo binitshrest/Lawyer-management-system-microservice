@@ -2,6 +2,7 @@ package org.binitshrestha.userservice.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.binitshrestha.common_contract.enums.RoleType;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 

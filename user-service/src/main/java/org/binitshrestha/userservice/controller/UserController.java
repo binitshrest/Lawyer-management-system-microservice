@@ -61,7 +61,7 @@ public class UserController {
         return user.isPresent();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id:\\d+}") // add a regex constraint to the id route so it only matches numeric id
     UserResponseDto getUserById(@PathVariable("id") Long id) {
         return userService.getUserById(id);
     }

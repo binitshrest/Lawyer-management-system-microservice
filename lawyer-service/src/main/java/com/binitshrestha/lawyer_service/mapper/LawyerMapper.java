@@ -58,25 +58,41 @@ public class LawyerMapper {
     public static List<LawyerResponse> toLawyerResponse(List<UserResponseDto> users, List<Lawyer> lawyers) {
         List<LawyerResponse> lawyerList = new ArrayList<>();
         for (UserResponseDto user : users) {
-            Lawyer lawyer = lawyers.stream()
+            lawyers.stream()
                     .filter(l -> l.getUserId().equals(user.id()))
-                    .findFirst()
-                    .orElse(null);
+                    .findFirst().ifPresent(lawyer -> lawyerList.add(
+                            LawyerResponse.builder()
+                                    .user(user)
+                                    .licenceNumber(lawyer.getLicenceNumber())
+                                    .specialization(lawyer.getSpecialization())
+                                    .yearsOfExperience(lawyer.getYearsOfExperience())
+                                    .availableStatus(lawyer.getAvailabilityStatus().name())
+                                    .hourlyRate(lawyer.getHourlyRate())
+                                    .isVerified(lawyer.getIsVerified())
+                                    .build()));
 
-            if (lawyer != null) {
-                lawyerList.add(
-                        LawyerResponse.builder()
-                                .user(user)
-                                .licenceNumber(lawyer.getLicenceNumber())
-                                .specialization(lawyer.getSpecialization())
-                                .yearsOfExperience(lawyer.getYearsOfExperience())
-                                .availableStatus(lawyer.getAvailabilityStatus().name())
-                                .hourlyRate(lawyer.getHourlyRate())
-                                .isVerified(lawyer.getIsVerified())
-                                .build());
-            }
         }
 
         return lawyerList;
+    }
+
+    public static List<LawyerResponse> toLawyerResponse2(List<UserResponseDto> users, List<Lawyer> lawyers) {
+        List<LawyerResponse> lawyerResponses = new ArrayList<>();
+        for (Lawyer lawyer : lawyers) {
+            users.stream()
+                    .filter(u -> u.id().equals(lawyer.getUserId()))
+                    .findFirst().ifPresent(matchedUser -> lawyerResponses.add(
+                            LawyerResponse.builder()
+                                    .user(matchedUser)
+                                    .licenceNumber(lawyer.getLicenceNumber())
+                                    .specialization(lawyer.getSpecialization())
+                                    .yearsOfExperience(lawyer.getYearsOfExperience())
+                                    .availableStatus(lawyer.getAvailabilityStatus().name())
+                                    .hourlyRate(lawyer.getHourlyRate())
+                                    .isVerified(lawyer.getIsVerified())
+                                    .build()));
+
+        }
+        return lawyerResponses;
     }
 }

@@ -21,6 +21,7 @@
         <module>common-contract</module>
         <module>user-service</module>
         <module>lawyer-service</module>
+        <module>rating-service</module>
     </modules>
 
     <properties>
@@ -50,18 +51,6 @@
     <build>
         <pluginManagement>
             <plugins>
-                <!-- Compiler Plugin -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.11.0</version>
-                    <configuration>
-                        <source>${java.version}</source>
-                        <target>${java.version}</target>
-                        <encoding>${project.build.sourceEncoding}</encoding>
-                    </configuration>
-                </plugin>
-
                 <!-- Spring Boot Plugin (for submodules) -->
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
@@ -70,6 +59,26 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        <plugins>
+            <!-- Compiler Plugin with Lombok annotation processor configured for all modules -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.30</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
 </project>

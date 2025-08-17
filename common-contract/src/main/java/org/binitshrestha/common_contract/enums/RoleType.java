@@ -1,4 +1,4 @@
-package org.binitshrestha.userservice.model;
+package org.binitshrestha.common_contract.enums;
 
 public enum RoleType {
     USER,

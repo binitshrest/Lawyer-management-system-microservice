@@ -40,11 +40,18 @@ public class LawyerServiceImpl implements LawyerService {
 
     @Override
     public List<LawyerResponse> getLawyers() {
-        List<UserResponseDto> usersWithLawyerRole = userClient.getUsersByRole(Long.valueOf(3));
+        List<UserResponseDto> usersWithLawyerRole = userClient.getUsersByRole(3L);
         List<Long> userIds = usersWithLawyerRole.stream().map(UserResponseDto::id).toList();
 
         List<Lawyer> lawyers = lawyerRepository.findByUserIdIn(userIds);
         return LawyerMapper.toLawyerResponse(usersWithLawyerRole, lawyers);
+    }
+
+    @Override
+    public List<LawyerResponse> searchBySpecialization(String specialization) {
+        List<UserResponseDto> usersWithLawyerRole = userClient.getUsersByRole(3L);
+        List<Lawyer> lawyersBySpecialization = lawyerRepository.findBySpecializationIgnoreCase(specialization);
+        return LawyerMapper.toLawyerResponse2(usersWithLawyerRole, lawyersBySpecialization);
     }
 
 }

@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface LawyerRepository extends JpaRepository<Lawyer, Long> {
     List<Lawyer> findByUserIdIn(Collection<Long> userIds);
+
+    List<Lawyer> findBySpecializationIgnoreCase(String specialization);
 }
