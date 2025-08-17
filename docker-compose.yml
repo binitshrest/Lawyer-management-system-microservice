@@ -1,0 +1,86 @@
+version: "3.9"
+
+services:
+  postgres-user:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: user_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - pgdata-user:/var/lib/postgresql/data
+    networks: [appnet]
+
+  postgres-lawyer:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: lawyer_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - pgdata-lawyer:/var/lib/postgresql/data
+    networks: [appnet]
+
+  postgres-rating:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: rating_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - pgdata-rating:/var/lib/postgresql/data
+    networks: [appnet]
+
+  user-service:
+    build:
+      context: .
+      dockerfile: user-service/Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-user:5432/user_db
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_PROFILES_ACTIVE: docker
+    ports:
+      - "9010:9010"
+    depends_on: [postgres-user]
+    networks: [appnet]
+
+  lawyer-service:
+    build:
+      context: .
+      dockerfile: lawyer-service/Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-lawyer:5432/lawyer_db
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_PROFILES_ACTIVE: docker
+      FEIGN-CLIENT_USER_SERVICE_URL: http://user-service:9010/api/users
+    ports:
+      - "9020:9020"
+    depends_on: [postgres-lawyer, user-service]
+    networks: [appnet]
+
+  rating-service:
+    build:
+      context: .
+      dockerfile: rating-service/Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-rating:5432/rating_db
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_PROFILES_ACTIVE: docker
+    ports:
+      - "9030:9030"
+    depends_on: [postgres-rating]
+    networks: [appnet]
+
+networks:
+  appnet:
+
+volumes:
+  pgdata-user:
+  pgdata-lawyer:
+  pgdata-rating:

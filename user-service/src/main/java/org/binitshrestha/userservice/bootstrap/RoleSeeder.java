@@ -2,7 +2,7 @@ package org.binitshrestha.userservice.bootstrap;
 
 import lombok.RequiredArgsConstructor;
 import org.binitshrestha.userservice.model.Role;
-import org.binitshrestha.userservice.model.RoleType;
+import org.binitshrestha.common_contract.enums.RoleType;
 import org.binitshrestha.userservice.repository.RoleRepository;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;

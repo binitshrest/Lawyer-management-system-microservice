@@ -5,7 +5,7 @@
 //import org.binitshrestha.userservice.dto.RoleDto;
 //import org.binitshrestha.userservice.mapper.UserMapper;
 //import org.binitshrestha.userservice.model.Role;
-//import org.binitshrestha.userservice.model.RoleType;
+//import org.binitshrestha.common_contract.enums.RoleType;
 //import org.binitshrestha.userservice.model.User;
 //import org.binitshrestha.userservice.repository.RoleRepository;
 //import org.binitshrestha.userservice.repository.UserRepository;

@@ -16,9 +16,7 @@
     <packaging>jar</packaging>
     <name>Common Contract Module</name>
 
-    <properties>
-        <java.version>17</java.version>
-    </properties>
+    <!-- Inherit Java version and other properties from parent POM -->
 
     <dependencies>
         <!-- Lombok for cleaner DTOs -->
