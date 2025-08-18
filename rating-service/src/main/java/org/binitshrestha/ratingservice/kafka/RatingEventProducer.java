@@ -1,8 +1,7 @@
 package org.binitshrestha.ratingservice.kafka;
 
 import lombok.RequiredArgsConstructor;
-import org.binitshrestha.ratingservice.dto.RatingCreateRequest;
-import org.binitshrestha.ratingservice.dto.RatingCreatedEvent;
+import org.binitshrestha.common_contract.dto.event.RatingCreatedEvent;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 

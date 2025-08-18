@@ -1,4 +1,4 @@
-package org.binitshrestha.ratingservice.dto;
+package org.binitshrestha.common_contract.dto.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +15,7 @@ public record RatingCreatedEvent(
         String userId,
         String lawyerId,
         String targetType,
-        Double ratingValue,
+        double ratingValue,
         String comment,
         Instant createdAt
 ) {

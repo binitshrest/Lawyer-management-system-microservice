@@ -24,7 +24,7 @@ public class Rating {
     private Long targetId;
     private RoleType targetType;
     private Long caseId;
-    private int ratingValue;
+    private double ratingValue;
     private String comment;
     @CreationTimestamp
     private Instant createdAt;

@@ -2,7 +2,7 @@ package org.binitshrestha.ratingservice.service;
 
 import lombok.RequiredArgsConstructor;
 import org.binitshrestha.ratingservice.dto.RatingCreateRequest;
-import org.binitshrestha.ratingservice.dto.RatingCreatedEvent;
+import org.binitshrestha.common_contract.dto.event.RatingCreatedEvent;
 import org.binitshrestha.ratingservice.dto.RatingResponse;
 import org.binitshrestha.ratingservice.kafka.RatingEventProducer;
 import org.binitshrestha.ratingservice.mapper.RatingMapper;
@@ -19,18 +19,10 @@ public class RatingServiceImpl implements RatingService{
     public RatingResponse createRating(RatingCreateRequest request) {
         Rating newRating = RatingMapper.toModel(request);
         ratingRepository.save(newRating);
-
         // Publish Kafka Event
-        RatingCreatedEvent event = new RatingCreatedEvent(
-                newRating.getId(),
-                newRating.getRaterId(),
-                newRating.getTargetId(),
-                newRating.getTargetType(),
-                newRating.getRatingValue(),
-                newRating.getComment(),
-                newRating.getCreatedAt()
-        );
-
-        return null;
+        RatingCreatedEvent eventToPublish = RatingMapper.toRatingCreatedEvent(newRating);
+        eventProducer.publishRatingCreated(eventToPublish);
+        //convert to dto
+        return RatingMapper.toRatingResponse(newRating);
     }
 }
