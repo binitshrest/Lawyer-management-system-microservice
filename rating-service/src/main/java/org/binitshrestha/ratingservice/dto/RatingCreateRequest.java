@@ -7,9 +7,8 @@ public record RatingCreateRequest(
     Long userId,
     Long lawyerId,
     Long caseId,
-
     String ratingType,
-    int ratingValue,
+    double ratingValue,
     String comments
 ) {
 }
