@@ -4,9 +4,12 @@ import com.binitshrestha.lawyer_service.dto.LawyerCreateRequest;
 import com.binitshrestha.lawyer_service.dto.LawyerCreateResponse;
 import com.binitshrestha.lawyer_service.dto.LawyerResponse;
 import com.binitshrestha.lawyer_service.model.Lawyer;
+import com.binitshrestha.lawyer_service.model.LawyerRating;
 import org.binitshrestha.common_contract.dto.RoleDto;
 import org.binitshrestha.common_contract.dto.UserCreateRequest;
 import org.binitshrestha.common_contract.dto.UserResponseDto;
+import org.binitshrestha.common_contract.dto.event.RatingCreatedEvent;
+import org.binitshrestha.common_contract.enums.RoleType;
 import org.binitshrestha.common_contract.enums.UserStatus;
 
 import java.util.ArrayList;
@@ -94,5 +97,16 @@ public class LawyerMapper {
 
         }
         return lawyerResponses;
+    }
+
+    public static LawyerRating toLawyerRatingModel(RatingCreatedEvent event) {
+        return LawyerRating.builder()
+                .userId(Long.valueOf(event.userId()))
+                .lawyerId(Long.valueOf(event.lawyerId()))
+                .targetType(RoleType.valueOf(event.targetType()))
+                .ratingValue(event.ratingValue())
+                .comment(event.comment())
+                .givenBy(event.givenBy())
+                .build();
     }
 }

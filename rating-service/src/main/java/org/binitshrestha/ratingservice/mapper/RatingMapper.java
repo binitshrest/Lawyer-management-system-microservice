@@ -15,6 +15,7 @@ public class RatingMapper {
                 .caseId(request.caseId())
                 .ratingValue(request.ratingValue())
                 .comment(request.comments())
+                .givenBy(request.givenBy())
                 .build();
     }
 
@@ -26,6 +27,7 @@ public class RatingMapper {
                 .targetType(String.valueOf(newRating.getTargetType()))
                 .ratingValue(newRating.getRatingValue())
                 .comment(newRating.getComment())
+                .givenBy(newRating.getGivenBy())
                 .createdAt(newRating.getCreatedAt())
                 .build();
     }
@@ -37,6 +39,7 @@ public class RatingMapper {
                 .lawyerId(String.valueOf(newRating.getTargetId()))
                 .score(newRating.getRatingValue())
                 .comment(newRating.getComment())
+                .givenBy(newRating.getGivenBy())
                 .build();
     }
 }

@@ -11,6 +11,7 @@ public record RatingResponse(
         String lawyerId,
         double score,
         String comment,
-        Instant CreatedAt
+        Instant CreatedAt,
+        String givenBy
 ) {
 }

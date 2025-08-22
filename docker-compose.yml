@@ -41,6 +41,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: password
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_PROFILES_ACTIVE: docker
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
     ports:
       - "9010:9010"
     depends_on: [postgres-user]
@@ -57,6 +58,7 @@ services:
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_PROFILES_ACTIVE: docker
       FEIGN-CLIENT_USER_SERVICE_URL: http://user-service:9010/api/users
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
     ports:
       - "9020:9020"
     depends_on: [postgres-lawyer, user-service]
@@ -72,6 +74,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: password
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_PROFILES_ACTIVE: docker
+      SPRING_KAFKA_BOOTSRAP_SERVERS: kafka:9092
     ports:
       - "9030:9030"
     depends_on: [postgres-rating]
