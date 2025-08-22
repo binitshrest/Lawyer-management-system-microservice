@@ -9,6 +9,7 @@ public record RatingCreateRequest(
     Long caseId,
     String ratingType,
     double ratingValue,
-    String comments
+    String comments,
+    String givenBy
 ) {
 }

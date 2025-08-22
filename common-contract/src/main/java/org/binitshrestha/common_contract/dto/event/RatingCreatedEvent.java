@@ -17,6 +17,7 @@ public record RatingCreatedEvent(
         String targetType,
         double ratingValue,
         String comment,
-        Instant createdAt
+        Instant createdAt,
+        String givenBy
 ) {
 }

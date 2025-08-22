@@ -2,6 +2,8 @@ package org.binitshrestha.userservice.mapper;
 
 import org.binitshrestha.common_contract.dto.RoleDto;
 import org.binitshrestha.common_contract.dto.UserCreateRequest;
+import org.binitshrestha.common_contract.dto.event.RatingCreatedEvent;
+import org.binitshrestha.common_contract.enums.RoleType;
 import org.binitshrestha.userservice.dto.CreateAdminRequestDto;
 import org.binitshrestha.userservice.dto.CreateAdminResponseDto;
 import org.binitshrestha.userservice.dto.request.RegisterUserReqDto;
@@ -10,6 +12,7 @@ import org.binitshrestha.userservice.dto.response.UserResponse;
 import org.binitshrestha.common_contract.dto.UserResponseDto;
 import org.binitshrestha.userservice.model.Role;
 import org.binitshrestha.userservice.model.User;
+import org.binitshrestha.userservice.model.UserRating;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
@@ -105,5 +108,14 @@ public class UserMapper {
                         .description(newAdminUser.getRole().getDescription())
                         .build())
                 .build();
+    }
+
+    public static UserRating toUserRatingModel(RatingCreatedEvent event) {
+        return UserRating.builder()
+                .userId(Long.valueOf(event.userId()))
+                .lawyerId(Long.valueOf(event.lawyerId()))
+                .targetType(RoleType.valueOf(event.targetType()))
+                .ratingValue(event.ratingValue())
+                .comment(event.comment()).build();
     }
 }
